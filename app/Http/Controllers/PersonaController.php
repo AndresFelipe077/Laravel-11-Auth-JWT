@@ -3,48 +3,65 @@
 namespace App\Http\Controllers;
 
 use App\Models\Persona;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PersonaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Get all people
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request): JsonResponse
     {
-        //
+        $people = Persona::all();
+        return response()->json($people);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create new person
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $persona = Persona::create($request->all());
-        return response()->json($persona);
+        return response()->json($persona, 201);
     }
 
     /**
-     * Display the specified resource.
+     * Get person by id
+     * @param string $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Persona $persona)
+    public function show(string $id): JsonResponse
     {
-        //
+        $person = Persona::findOrFail($id);
+        return response()->json($person);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update person by id
+     * @param \Illuminate\Http\Request $request
+     * @param string $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Persona $persona)
+    public function update(Request $request, string $id): JsonResponse
     {
-        //
+        $person = Persona::findOrFail($id);
+        $person->update($request->all());
+        return response()->json($person);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete person by id
+     * @param string $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Persona $persona)
+    public function destroy(string $id): JsonResponse
     {
-        //
+        $person = Persona::findOrFail($id);
+        return response()->json(null, 204);
     }
 }
