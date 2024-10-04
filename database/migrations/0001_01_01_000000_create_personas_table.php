@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('apellidos');
             $table->enum('genero', ['M', 'F', 'Otro']);
             $table->string('tipoSangre');
-            $table->date('fecha_nacimiento');
+            $table->date('fechaNacimiento');
             $table->string('celular');
-            $table->string('ciudad_ubicacion');
+            $table->string('ciudadUbicacion');
             $table->string('delegacion');
             $table->string('documentoIdentidadPath')->nullable();
             $table->string('documentoAdicionalPath')->nullable();

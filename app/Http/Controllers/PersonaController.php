@@ -20,7 +20,8 @@ class PersonaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $persona = Persona::create($request->all());
+        return response()->json($persona);
     }
 
     /**
