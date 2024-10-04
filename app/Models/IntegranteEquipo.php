@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class IntegranteEquipo extends Model
 {
@@ -27,4 +28,15 @@ class IntegranteEquipo extends Model
         date_default_timezone_set("America/Bogota");
         $this->attributes['updated_at'] = Carbon::now();
     }
+
+    public function equipo(): BelongsTo
+    {
+        return $this->belongsTo(Equipo::class, 'idEquipo');
+    }
+
+    public function persona(): BelongsTo
+    {
+        return $this->belongsTo(Persona::class, 'idPersona');
+    }
+
 }

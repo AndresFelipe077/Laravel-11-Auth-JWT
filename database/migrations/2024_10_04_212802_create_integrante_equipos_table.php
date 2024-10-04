@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('integranteEquipos', function (Blueprint $table) {
             // $table->id();
             $table->uuid('id')->primary();
-
+            $table->foreignUuid('idEquipo')->references('id')->on('equipos');
+            $table->foreignUuid('idPersona')->references('id')->on('personas');
             $table->timestamps();
         });
     }
