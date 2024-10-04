@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -18,9 +18,9 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
+        'persona_id', // Relación con la tabla personas
     ];
 
     /**
@@ -34,19 +34,23 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 
-    // Rest omitted for brevity
+    /**
+     * Define la relación con el modelo Persona.
+     * Un usuario pertenece a una persona.
+     */
+    public function persona()
+    {
+        return $this->belongsTo(Persona::class);
+    }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
