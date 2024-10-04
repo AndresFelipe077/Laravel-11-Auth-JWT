@@ -13,19 +13,19 @@ return new class extends Migration
     {
         Schema::create('personas', function (Blueprint $table) {
             $table->uuid(column: 'id')->primary();
-            $table->enum('tipo_identificacion', ['TI', 'CC', 'CE']);
+            $table->enum('tipoIdentificacion', ['TI', 'CC', 'CE']);
             $table->string('identificacion')->unique();
             $table->string('nombres');
             $table->string('apellidos');
             $table->enum('genero', ['M', 'F', 'Otro']);
-            $table->string('tipo_sangre');
+            $table->string('tipoSangre');
             $table->date('fecha_nacimiento');
             $table->string('celular');
             $table->string('ciudad_ubicacion');
             $table->string('delegacion');
-            $table->string('documento_identidad_path')->nullable();
-            $table->string('documento_adicional_path')->nullable();
-            $table->string('fotografia_path')->nullable();
+            $table->string('documentoIdentidadPath')->nullable();
+            $table->string('documentoAdicionalPath')->nullable();
+            $table->string('fotografiaPath')->nullable();
             $table->timestamps();
         });
     }
