@@ -3,25 +3,33 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Carbon\Carbon;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable;
+    use HasFactory, HasUuids, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $keyType = 'string';
+    public $incrementing = false;
+    protected $guarded = ['id'];
+
+    public function setCreatedAtAttribute($value): void
+    {
+        date_default_timezone_set("America/Bogota");
+        $this->attributes['created_at'] = Carbon::now();
+    }
+
+    public function setUpdatedAtAttribute($value): void
+    {
+        date_default_timezone_set("America/Bogota");
+        $this->attributes['updated_at'] = Carbon::now();
+    }
 
     /**
      * The attributes that should be hidden for serialization.
