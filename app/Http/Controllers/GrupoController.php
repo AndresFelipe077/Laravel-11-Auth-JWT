@@ -4,46 +4,80 @@ namespace App\Http\Controllers;
 
 use App\Models\Grupo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class GrupoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Obtener todos los grupos
     public function index()
     {
-        //
+        $grupos = Grupo::with('torneo')->get();
+        return response()->json($grupos);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Crear un nuevo grupo
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'idTorneo' => 'required|exists:torneos,id',
+            'nombreGrupo' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        $grupo = Grupo::create($request->all());
+
+        return response()->json($grupo, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Grupo $grupo)
+    // Obtener un grupo por su ID
+    public function show($id)
     {
-        //
+        $grupo = Grupo::with('torneo')->find($id);
+
+        if (!$grupo) {
+            return response()->json(['message' => 'Grupo no encontrado'], 404);
+        }
+
+        return response()->json($grupo);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Grupo $grupo)
+    // Actualizar un grupo
+    public function update(Request $request, $id)
     {
-        //
+        $grupo = Grupo::find($id);
+
+        if (!$grupo) {
+            return response()->json(['message' => 'Grupo no encontrado'], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'idTorneo' => 'required|exists:torneos,id',
+            'nombreGrupo' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        $grupo->update($request->all());
+
+        return response()->json($grupo);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Grupo $grupo)
+    // Eliminar un grupo
+    public function destroy($id)
     {
-        //
+        $grupo = Grupo::find($id);
+
+        if (!$grupo) {
+            return response()->json(['message' => 'Grupo no encontrado'], 404);
+        }
+
+        $grupo->delete();
+
+        return response()->json(['message' => 'Grupo eliminado correctamente']);
     }
 }
